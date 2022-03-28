@@ -12,7 +12,6 @@ public class PlannerController {
 
     @GetMapping("/about")
     public String getMyName(){
-        return "Kian Hosseinkhani";
+        return "Kian Hosseinkhani & Sasha Vujisic";
     }
-
 }
