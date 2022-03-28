@@ -1,27 +1,27 @@
 package com.example.Planner.Model;
 
 public class Semester {
-    int year;
-    int term;
+    String year;
+    char term;
 
-    public Semester(int year, int term) {
+    public Semester(String year, char term) {
         this.year = year;
         this.term = term;
     }
 
-    public void setYear(int year) {
+    public void setYear(String year) {
         this.year = year;
     }
 
-    public void setTerm(int term) {
+    public void setTerm(char term) {
         this.term = term;
     }
 
-    public int getYear() {
+    public String getYear() {
         return year;
     }
 
-    public int getTerm() {
+    public char getTerm() {
         return term;
     }
 }
