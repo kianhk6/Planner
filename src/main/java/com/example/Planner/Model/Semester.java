@@ -9,4 +9,19 @@ public class Semester {
         this.term = term;
     }
 
+    public void setYear(int year) {
+        this.year = year;
+    }
+
+    public void setTerm(int term) {
+        this.term = term;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    public int getTerm() {
+        return term;
+    }
 }
