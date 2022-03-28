@@ -1,2 +1,4 @@
-package com.example.Planner;public class Main {
+package com.example.Planner;
+
+public class Main {
 }
