@@ -1,13 +1,16 @@
 package com.example.Planner.Model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class CourseInfo {
-    String[] instructors;
+    List<String> instructors;
     Semester semester;
     Label label;
     EnrollmentSpace enrollmentSpace;
     String Location;
 
-    public CourseInfo(String[] instructors, Semester semester,
+    public CourseInfo(List<String> instructors, Semester semester,
                       Label label, EnrollmentSpace enrollmentSpace,
                       String location) {
         this.instructors = instructors;
@@ -17,11 +20,11 @@ public class CourseInfo {
         Location = location;
     }
 
-    public String[] getInstructors() {
+    public List<String> getInstructors() {
         return instructors;
     }
 
-    public void setInstructors(String[] instructors) {
+    public void setInstructors(List<String> instructors) {
         this.instructors = instructors;
     }
 

@@ -2,11 +2,11 @@ package com.example.Planner.Model;
 
 public class EnrollmentSpace {
     int capacity;
-    int takenSeats;
+    int takenSeat;
 
     public EnrollmentSpace(int capacity, int takenSeats) {
         this.capacity = capacity;
-        this.takenSeats = takenSeats;
+        this.takenSeat = takenSeats;
     }
 
     public int getCapacity() {
@@ -17,11 +17,11 @@ public class EnrollmentSpace {
         this.capacity = capacity;
     }
 
-    public int getTakenSeats() {
-        return takenSeats;
+    public int getTakenSeat() {
+        return takenSeat;
     }
 
-    public void setTakenSeats(int takenSeats) {
-        this.takenSeats = takenSeats;
+    public void setTakenSeat(int takenSeat) {
+        this.takenSeat = takenSeat;
     }
 }
