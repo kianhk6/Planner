@@ -20,6 +20,6 @@ public class PlannerController {
     public void dumpModel(){
         CourseInfoGenerator courseInfoGenerator = new CourseInfoGenerator();
         courseInfoGenerator.transferFileToObject("./data/small_data.csv");
-        courseInfoGenerator.getCourses();
+        courseInfoGenerator.listCourses();
     }
 }

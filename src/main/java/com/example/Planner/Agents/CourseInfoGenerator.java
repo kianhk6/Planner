@@ -76,8 +76,10 @@ public class CourseInfoGenerator {
         }
     }
 
-    public List<CourseInfo> getCourses() {
-        return courses;
+    public void listCourses() {
+        for (CourseInfo course : courses) {
+            System.out.println(course);
+        }
     }
 
     public void setCourses(List<CourseInfo> courses) {
