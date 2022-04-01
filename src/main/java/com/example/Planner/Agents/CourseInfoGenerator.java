@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Scanner;
 
 
-public class courseInfoGenerator {
+public class CourseInfoGenerator {
     List<CourseInfo> courses = new ArrayList<>();
     public void transferFileToObject(String path){
         try {
