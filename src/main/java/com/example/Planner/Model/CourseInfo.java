@@ -1,6 +1,5 @@
 package com.example.Planner.Model;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class CourseInfo {
@@ -8,7 +7,7 @@ public class CourseInfo {
     Semester semester;
     Label label;
     EnrollmentSpace enrollmentSpace;
-    String Location;
+    String location;
 
     public CourseInfo(List<String> instructors, Semester semester,
                       Label label, EnrollmentSpace enrollmentSpace,
@@ -17,7 +16,7 @@ public class CourseInfo {
         this.semester = semester;
         this.label = label;
         this.enrollmentSpace = enrollmentSpace;
-        Location = location;
+        this.location = location;
     }
 
     public List<String> getInstructors() {
@@ -53,10 +52,15 @@ public class CourseInfo {
     }
 
     public String getLocation() {
-        return Location;
+        return location;
     }
 
     public void setLocation(String location) {
-        Location = location;
+        this.location = location;
+    }
+    @Override
+    public String toString(){
+        return semester.getYear()+ " , " + semester.getTerm() + " , " + label.subject + " , " + label.catalogNum
+                + " , " + location + " , " + enrollmentSpace.capacity + " , " + enrollmentSpace.takenSeat + " , " + instructors + " , " + label.componentCode;
     }
 }
