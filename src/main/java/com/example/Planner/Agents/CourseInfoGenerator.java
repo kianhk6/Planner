@@ -78,7 +78,7 @@ public class CourseInfoGenerator {
 
     public void listCourses() {
         for (CourseInfo course : courses) {
-            System.out.println(course);
+            System.out.println(course);//
         }
     }
 
