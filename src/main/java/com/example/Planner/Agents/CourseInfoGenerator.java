@@ -107,38 +107,53 @@ public class CourseInfoGenerator {
         while (currentDumpIndex < dumpSize) {
             CourseInfo current = dumpCourses.get(currentDumpIndex);
             System.out.println(current.getLabel().getSubject() + " " + current.getLabel().getCatalogNum());
-            List<String> semesterAndLocations = new ArrayList<>();
+            List<String> semesterLocationList = new ArrayList<>();
 
             while (nextDumpIndex < dumpSize && sameSubjectCatalogNumber(current, dumpCourses.get(nextDumpIndex))) {
-                int i = 0;
-                String instructors = " by ";
+                Boolean needsComma = false;
+                String StringOfFinalInstructors = " by ";
                 for (String instructor : dumpCourses.get(nextDumpIndex-1).getInstructors()) { //Makes the teacher string
-                    if (i > 0) {
-                        instructors += ", " + instructor;
-                    } else {
-                        instructors += instructor;
+                    if(!StringOfFinalInstructors.contains(instructor)){
+                        if (needsComma) {
+                            StringOfFinalInstructors += ", " + instructor;
+                        } else {
+                            StringOfFinalInstructors += instructor;
+                        }
+                        needsComma = true;
                     }
-                    i++;
                 }
-                String semesterLocation = dumpCourses.get(nextDumpIndex-1).getSemester().getYear() +
+                String newSemesterLocation = dumpCourses.get(nextDumpIndex-1).getSemester().getYear() +
                         dumpCourses.get(nextDumpIndex-1).getSemester().getTerm() + " in " +
-                        dumpCourses.get(nextDumpIndex-1).getLocation() + instructors;
+                        dumpCourses.get(nextDumpIndex-1).getLocation() + StringOfFinalInstructors;
 
-                if (semesterAndLocations.size() > 0) { //"1147 in Burnaby by Anthony Dixon" is a string in this list.
-                    if (!semesterAndLocations.contains(semesterLocation)) { //Check to make sure theres no identical entries
-                        if (!semesterAndLocations.get(semesterAndLocations.size() - 1).contains(semesterLocation)) {
-                            //Checks if prev entry (like an array of teachers) doesnt contain the teacher about to be added
-                            semesterAndLocations.add(semesterLocation);
+                String typeAndSpace = "type=" + dumpCourses.get(nextDumpIndex-1).getLabel().getComponentCode() +
+                        ", " + "Enrollment=" + dumpCourses.get(nextDumpIndex-1).getEnrollmentSpace().getTakenSeat() + "/" + dumpCourses.get(nextDumpIndex-1).getEnrollmentSpace().getCapacity() ;
+
+
+
+
+                Boolean isAlreadyInList = false;
+                if (semesterLocationList.size() > 0) { //"1147 in Burnaby by Anthony Dixon" is a string in this list.
+                    for(String semestersLocation : semesterLocationList){
+                        if(semestersLocation.equals(newSemesterLocation)){
+                            isAlreadyInList = true;
                         }
                     }
                 }
-                else { //if nothing is in there to be compared with, add an entry
-                    semesterAndLocations.add(semesterLocation);
+                if(isAlreadyInList){
+                    //Checks if prev entry (like an array of teachers) doesnt contain the teacher about to be added
+                    semesterLocationList.add("\n   " + typeAndSpace);
                 }
+                else{
+                    semesterLocationList.add(newSemesterLocation);
+                    semesterLocationList.add("\n   " + typeAndSpace);
+
+                }
+
                     nextDumpIndex++;
             }
 
-            if (semesterAndLocations.size() == 0) { //Handles subjects that only appear once in list
+            if (semesterLocationList.size() == 0) { //Handle subjects that only appear once in list
                 int i = 0;
                 String instructors = " by ";
                 for (String instructor : dumpCourses.get(nextDumpIndex-1).getInstructors()) {
@@ -154,14 +169,13 @@ public class CourseInfoGenerator {
                         dumpCourses.get(nextDumpIndex-1).getSemester().getTerm() +
                         " in " + dumpCourses.get(nextDumpIndex-1).getLocation() + instructors;
 
-                semesterAndLocations.add(semesterLocation);
+                semesterLocationList.add(semesterLocation);
             }
 
-            for (String semesterLocation : semesterAndLocations) { //prints out the locations, semesters, and who offers it
+            for (String semesterLocation : semesterLocationList) { //prints out the locations, semesters, and who offers it
                 System.out.println(semesterLocation);
-//                System.out.println("TYPE=" + dumpCourses.get(nextDumpIndex-1).getLabel().getComponentCode());
             }
-            semesterAndLocations.clear(); //clears list before going to next subject
+            semesterLocationList.clear(); //clears list before going to next subject
             currentDumpIndex = nextDumpIndex;
             nextDumpIndex++;
         }
