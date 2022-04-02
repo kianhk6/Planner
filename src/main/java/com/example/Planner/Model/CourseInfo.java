@@ -63,7 +63,7 @@ public class CourseInfo implements Comparable<CourseInfo>{
     @Override
     public String toString(){
         return semester.getYear()+ " , " + semester.getTerm() + " , " + label.subject + " , " + label.catalogNum
-                + " , " + location + " , " + enrollmentSpace.capacity + " , " + enrollmentSpace.takenSeat + " , " + instructors + " , " + label.componentCode;
+                + " , " + location + " , " + enrollmentSpace.takenSeat + "/" + enrollmentSpace.capacity + " , " + instructors + " , " + label.componentCode;
     }
 
 

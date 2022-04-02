@@ -96,23 +96,134 @@ public class CourseInfoGenerator {
         }
     }
     public void listDumpCourses() {
+        int currentDumpIndex = 0;
+        int nextDumpIndex = 1;
+        int dumpSize = dumpCourses.size();
+
         for (CourseInfo course : dumpCourses) {
-            System.out.println(course);//
+            System.out.println(course);
         }
-    }
-    public void makeDumpModel() {
-        int dumpCourseIndex = 0;
-        int nextDumpCourseIndex = 1;
-        int dumpCourseSize = dumpCourses.size();
 
-        while (dumpCourseIndex < dumpCourseSize-1) {
-            CourseInfo current = dumpCourses.get(dumpCourseIndex);
-            CourseInfo next = dumpCourses.get(nextDumpCourseIndex);
-            if (current.getLabel().equals(next.getLabel())) {
+        while (currentDumpIndex < dumpSize) {
+            CourseInfo current = dumpCourses.get(currentDumpIndex);
+            System.out.println(current.getLabel().getSubject() + " " + current.getLabel().getCatalogNum());
+            List<String> semesterAndLocations = new ArrayList<>();
 
+            while (nextDumpIndex < dumpSize && sameSubjectCatalogNumber(current, dumpCourses.get(nextDumpIndex))) {
+                int i = 0;
+                String instructors = " by ";
+                for (String instructor : dumpCourses.get(nextDumpIndex-1).getInstructors()) { //Makes the teacher string
+                    if (i > 0) {
+                        instructors += ", " + instructor;
+                    } else {
+                        instructors += instructor;
+                    }
+                    i++;
+                }
+                String semesterLocation = dumpCourses.get(nextDumpIndex-1).getSemester().getYear() +
+                        dumpCourses.get(nextDumpIndex-1).getSemester().getTerm() + " in " +
+                        dumpCourses.get(nextDumpIndex-1).getLocation() + instructors;
+
+                if (semesterAndLocations.size() > 0) { //"1147 in Burnaby by Anthony Dixon" is a string in this list.
+                    if (!semesterAndLocations.contains(semesterLocation)) { //Check to make sure theres no identical entries
+                        if (!semesterAndLocations.get(semesterAndLocations.size() - 1).contains(semesterLocation)) {
+                            //Checks if prev entry (like an array of teachers) doesnt contain the teacher about to be added
+                            semesterAndLocations.add(semesterLocation);
+                        }
+                    }
+                }
+                else { //if nothing is in there to be compared with, add an entry
+                    semesterAndLocations.add(semesterLocation);
+                }
+                    nextDumpIndex++;
             }
+
+            if (semesterAndLocations.size() == 0) { //Handles subjects that only appear once in list
+                int i = 0;
+                String instructors = " by ";
+                for (String instructor : dumpCourses.get(nextDumpIndex-1).getInstructors()) {
+                    if (i > 0) {
+                        instructors += ", " + instructor;
+                    } else {
+                        instructors += instructor;
+                    }
+                    i++;
+                }
+
+                String semesterLocation = dumpCourses.get(nextDumpIndex-1).getSemester().getYear() +
+                        dumpCourses.get(nextDumpIndex-1).getSemester().getTerm() +
+                        " in " + dumpCourses.get(nextDumpIndex-1).getLocation() + instructors;
+
+                semesterAndLocations.add(semesterLocation);
+            }
+
+            for (String semesterLocation : semesterAndLocations) { //prints out the locations, semesters, and who offers it
+                System.out.println(semesterLocation);
+//                System.out.println("TYPE=" + dumpCourses.get(nextDumpIndex-1).getLabel().getComponentCode());
+            }
+            semesterAndLocations.clear(); //clears list before going to next subject
+            currentDumpIndex = nextDumpIndex;
+            nextDumpIndex++;
         }
     }
+
+//    public void listDumpCourses2() {
+//        int currentDumpIndex = 0;
+//        int nextDumpIndex = 1;
+//        int dumpSize = dumpCourses.size();
+//        for ( CourseInfo course : dumpCourses) {
+//            System.out.println(course);
+//        }
+//
+//        System.out.println(dumpSize);
+//        while (currentDumpIndex < dumpSize) {
+//            CourseInfo current = dumpCourses.get(currentDumpIndex);
+//
+//            System.out.println(current.getLabel().getSubject() + " " + current.getLabel().getCatalogNum());
+//            while (nextDumpIndex < dumpSize && sameSubjectCatalogNumber(current, dumpCourses.get(nextDumpIndex))) {
+//
+//                System.out.println(current.getSemester().getYear() + current.getSemester().getTerm() +
+//                        " in " + current.getLocation() + " by " + current.getInstructors());
+//                int nextDumpLocationYearTermIndex = nextDumpIndex;
+//                while (nextDumpLocationYearTermIndex < dumpSize && sameLocation(current, dumpCourses.get(nextDumpLocationYearTermIndex)) && sameYearAndTerm(current, dumpCourses.get(nextDumpLocationYearTermIndex))) {
+//                    System.out.println("TYPE=" + current.getLabel().getComponentCode());
+//                    int nextComponentCodeIndex = nextDumpIndex;
+//                    while(nextComponentCodeIndex < dumpSize && sameComponentCode(current, dumpCourses.get(nextComponentCodeIndex))) {
+//                        nextComponentCodeIndex++;
+//                    }
+//                    nextDumpLocationYearTermIndex++;
+//                }
+//                nextDumpIndex++;
+//            }
+//            currentDumpIndex = nextDumpIndex;
+//            nextDumpIndex++;
+//            System.out.println("main while loop: " + nextDumpIndex + " with dumpSize " + dumpSize);
+//        }
+//
+//    }
+
+    private boolean sameLocation(CourseInfo current, CourseInfo next) {
+//        System.out.println("current: " + current);
+//        System.out.println("next: " + next);
+//        System.out.println("equal: " + current.getLocation().equals(next.getLocation()));
+
+        return current.getLocation().equals(next.getLocation());
+    }
+
+    private boolean sameYearAndTerm(CourseInfo current, CourseInfo next) {
+        return (current.getSemester().getYear().equals(next.getSemester().getYear())) &&
+                Character.getNumericValue(current.getSemester().getTerm()) == Character.getNumericValue(next.getSemester().getTerm());
+    }
+
+    private boolean sameSubjectCatalogNumber(CourseInfo current, CourseInfo next) {
+        return current.getLabel().getSubject().equals((next.getLabel().getSubject())) &&
+                current.getLabel().getCatalogNum().equals(next.getLabel().getCatalogNum());
+    }
+
+    private boolean sameComponentCode(CourseInfo current, CourseInfo next) {
+        return current.getLabel().getComponentCode().equals(next.getLabel().getComponentCode());
+    }
+
 
     public void setCourses(List<CourseInfo> courses) {
         this.courses = courses;
@@ -133,7 +244,6 @@ public class CourseInfoGenerator {
             int currentCapacity = 0;
             int currentTaken = 0;
             while(nextCourseIndex <= coursesSize && sameCourse(current, courses.get(nextCourseIndex))){
-                System.out.println("nextCourseIndex: " + nextCourseIndex);
                 CourseInfo nextCourse = courses.get(nextCourseIndex);
 
                 List<String> nextInstructors = nextCourse.getInstructors();
@@ -144,9 +254,6 @@ public class CourseInfoGenerator {
                 }
                 currentCapacity = currentCapacity + nextCourse.getEnrollmentSpace().getCapacity();
                 currentTaken = currentTaken + nextCourse.getEnrollmentSpace().getTakenSeat();
-                System.out.println("for " + currentInstructors.get(0));
-                System.out.println(" capacity: " +currentCapacity);
-                System.out.println("current seatsTaken: " + currentTaken);
                 nextCourseIndex++;
             }
 
