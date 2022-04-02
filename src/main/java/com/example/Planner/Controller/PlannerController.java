@@ -19,7 +19,10 @@ public class PlannerController {
     @GetMapping("/dump-model")
     public void dumpModel(){
         CourseInfoGenerator courseInfoGenerator = new CourseInfoGenerator();
-        courseInfoGenerator.transferFileToObject("./data/small_data.csv");
-        courseInfoGenerator.listCourses();
+        courseInfoGenerator.transferFileToObject("./data/course_data_2018.csv");
+
+        courseInfoGenerator.sortCourses();
+        courseInfoGenerator.setUpDumpCourses();
+        courseInfoGenerator.listDumpCourses();
     }
 }
