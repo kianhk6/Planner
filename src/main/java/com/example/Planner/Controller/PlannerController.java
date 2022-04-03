@@ -8,8 +8,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api")
 public class PlannerController {
-    public final int MAX_CORNER = 9;
-    public final int MIN_CORNER = 0;
 
     @GetMapping("/about")
     public String getMyName(){
@@ -18,11 +16,8 @@ public class PlannerController {
 
     @GetMapping("/dump-model")
     public void dumpModel(){
-        CourseInfoGenerator courseInfoGenerator = new CourseInfoGenerator();
-        courseInfoGenerator.transferFileToObject("./data/small_data.csv");
-        courseInfoGenerator.sortCourses();
-        courseInfoGenerator.setUpDumpCourses();
+        CourseInfoGenerator courseInfoGenerator = new CourseInfoGenerator("./data/course_data_2018.csv");
         courseInfoGenerator.listDumpCourses();
-//        courseInfoGenerator.listDumpCourses2();
+
     }
 }
