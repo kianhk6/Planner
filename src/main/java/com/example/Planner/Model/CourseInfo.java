@@ -62,7 +62,7 @@ public class CourseInfo implements Comparable<CourseInfo>{
     }
     @Override
     public String toString(){
-        return semester.getYear()+ " , " + semester.getTerm() + " , " + label.subject + " , " + label.catalogNum
+        return semester.getYear()+ " , " + semester.getTerm() + " , " + label.dept + " , " + label.catalogNum
                 + " , " + location + " , " + enrollmentSpace.takenSeat + "/" + enrollmentSpace.capacity + " , " + instructors + " , " + label.componentCode;
     }
 
@@ -89,8 +89,8 @@ public class CourseInfo implements Comparable<CourseInfo>{
                 return -1;
             }
             else {
-                String subjectOne = this.getLabel().getSubject();
-                String subjectTwo = o.getLabel().getSubject();
+                String subjectOne = this.getLabel().getDept();
+                String subjectTwo = o.getLabel().getDept();
                 int compareSubject = subjectOne.compareTo(subjectTwo);
 
                 if(compareSubject != 0){

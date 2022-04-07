@@ -13,7 +13,26 @@ import java.util.*;
 public class CourseInfoGenerator {
     List<CourseInfo> courses = new ArrayList<>();
     List<CourseInfo> dumpCourses = new ArrayList<>();
+    IdGenerator idGenerator;
+
+
+
     public CourseInfoGenerator(String path){
+        setUpCourses(path);
+        sortCourses();
+        setUpDumpCourses();
+        SortCoursesBasedOnSubject();
+        idGenerator = new IdGenerator(courses);
+    }
+    public IdGenerator getIdGenerator() {
+        return idGenerator;
+    }
+
+    public void setIdGenerator(IdGenerator idGenerator) {
+        this.idGenerator = idGenerator;
+    }
+
+    private void setUpCourses(String path) {
         try {
             File file = new File(path);
             Scanner scan = new Scanner(file);
@@ -79,11 +98,15 @@ public class CourseInfoGenerator {
                         new Label(subjectStr, catalogNumStr, componentCodeStr),
                         new EnrollmentSpace(capacity, takenSeat), location));
             }
-            sortCourses();
-            setUpDumpCourses();
         }
         catch (FileNotFoundException e){
             System.out.println("file not found");
+        }
+    }
+
+    public void printNormalCourses(){
+        for(CourseInfo course : courses){
+            System.out.println(course);
         }
     }
 
@@ -99,7 +122,7 @@ public class CourseInfoGenerator {
 
         while (currentDumpIndex < dumpSize) {
             CourseInfo current = dumpCourses.get(currentDumpIndex);
-            System.out.println(current.getLabel().getSubject() + " " + current.getLabel().getCatalogNum());
+            System.out.println(current.getLabel().getDept() + " " + current.getLabel().getCatalogNum());
             List<String> semesterLocationList = new ArrayList<>();
             String StringOfFirstInstructors = getDumpInstructors(currentDumpIndex);
             String FirstSemesterLocation = getDumpSemesterAndLocation(currentDumpIndex, StringOfFirstInstructors);
@@ -139,12 +162,51 @@ public class CourseInfoGenerator {
         }
     }
 
+    private void SortCoursesBasedOnSubject() {
+        courses.sort(new Comparator<CourseInfo>() {
+            @Override
+            public int compare(CourseInfo o1, CourseInfo o2) {
+                String subjectOne = o1.getLabel().getDept();
+                String subjectTwo = o2.getLabel().getDept();
+                int compareSubject = subjectOne.compareTo(subjectTwo);
+
+                if (compareSubject != 0) {
+                    return compareSubject;
+                } else {
+                    String catalogNumberOne = o1.getLabel().getCatalogNum();
+                    String catalogNumberTwo = o2.getLabel().getCatalogNum();
+                    int compareCatalog = catalogNumberOne.compareTo(catalogNumberTwo);
+                    if(compareCatalog != 0){
+                        return compareCatalog;
+                    } else { // for 0
+                        int yearOne = Integer.parseInt(o1.getSemester().getYear());
+                        int yearTwo = Integer.parseInt(o2.getSemester().getYear());
+
+                        if (yearOne > yearTwo) {
+                            return 1;
+                        } else if (yearOne < yearTwo) {
+                            return -1;
+                        } else {
+                            int termOne = Character.getNumericValue(o1.getSemester().getTerm());
+                            int termTwo = Character.getNumericValue(o2.getSemester().getTerm());
+                            if (termOne > termTwo) {
+                                return 1;
+                            } else if (termOne < termTwo) {
+                                return -1;
+                            }
+                            return 0;
+                        }
+                    }
+                }
+            }});
+    }
+
     private void SortDumpCourseBasedOnSubject() {
         dumpCourses.sort(new Comparator<CourseInfo>() {
             @Override
             public int compare(CourseInfo o1, CourseInfo o2) {
-                String subjectOne = o1.getLabel().getSubject();
-                String subjectTwo = o2.getLabel().getSubject();
+                String subjectOne = o1.getLabel().getDept();
+                String subjectTwo = o2.getLabel().getDept();
                 int compareSubject = subjectOne.compareTo(subjectTwo);
 
                 if (compareSubject != 0) {
@@ -207,7 +269,7 @@ public class CourseInfoGenerator {
     }
 
     private boolean sameSubjectCatalogNumber(CourseInfo current, CourseInfo next) {
-        return current.getLabel().getSubject().equals((next.getLabel().getSubject())) &&
+        return current.getLabel().getDept().equals((next.getLabel().getDept())) &&
                 current.getLabel().getCatalogNum().equals(next.getLabel().getCatalogNum());
     }
 
@@ -261,7 +323,7 @@ public class CourseInfoGenerator {
     private boolean sameCourse(CourseInfo current, CourseInfo next) {
         return current.getSemester().getYear().equals(next.getSemester().getYear()) &&
                 current.getSemester().getTerm() == next.getSemester().getTerm() &&
-                current.getLabel().getSubject().equals(next.getLabel().getSubject()) &&
+                current.getLabel().getDept().equals(next.getLabel().getDept()) &&
                 current.getLabel().getCatalogNum().equals(next.getLabel().getCatalogNum()) &&
                 current.getLabel().getComponentCode().equals(next.getLabel().getComponentCode()) &&
                 current.getLocation().equals(next.getLocation());
