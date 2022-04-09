@@ -24,6 +24,9 @@ public class CourseInfoGenerator {
         SortCoursesBasedOnSubject();
     }
 
+    public void setDumpCourses(List<CourseInfo> dumpCourses) {
+        this.dumpCourses = dumpCourses;
+    }
 
     private void setUpCourses(String path) {
         try {
