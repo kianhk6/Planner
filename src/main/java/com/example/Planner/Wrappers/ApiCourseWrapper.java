@@ -4,8 +4,8 @@ public class ApiCourseWrapper {
     public long courseId;
     public String catalogNumber;
 
-    public ApiCourseWrapper(String catalogNumber, long deptId) {
-        this.courseId = deptId;
+    public ApiCourseWrapper(String catalogNumber, long courseId) {
+        this.courseId = courseId;
         this.catalogNumber = catalogNumber;
     }
 

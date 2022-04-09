@@ -69,7 +69,7 @@ public class WrapperInfoGenerator {
 
     }
 
-    public List<ApiCourseOfferingWrapper> getCourseBasedOnIds(long deptId, long courseId){
+    public List<ApiCourseOfferingWrapper> getCoursesBasedOnIds(long deptId, long courseId){
         List<CourseInfo> courses = courseInfoGenerator.getDumpCourses();
         List<ApiCourseOfferingWrapper> offerings = new ArrayList<>();
         List<Long> ids = new ArrayList<>();
@@ -96,6 +96,20 @@ public class WrapperInfoGenerator {
         }
         return offerings;
     }
+    public CourseInfo getCourseBasedOnIds(long deptId, long courseId){
+        List<CourseInfo> courses = courseInfoGenerator.getDumpCourses();
+        List<ApiCourseOfferingWrapper> offerings = new ArrayList<>();
+        List<Long> ids = new ArrayList<>();
+        for(CourseInfo course : courses){
+            if(course.getLabel().getDeptId() == deptId
+                    && course.getLabel().getCourseId() == courseId){
+                    return course;
+                }
+            }
+        return null;
+    }
+
+
 
     public List<ApiOfferingSectionWrapper> getOfferingBasedOnCourseOfferingId(long deptId, long courseId, long courseOfferingId) {
         List<CourseInfo> courses = courseInfoGenerator.getDumpCourses();
