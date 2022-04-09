@@ -2,10 +2,7 @@ package com.example.Planner.Controller;
 
 import com.example.Planner.Agents.CourseInfoGenerator;
 import com.example.Planner.Agents.IdGenerator;
-import com.example.Planner.Wrappers.ApiCourseOfferingWrapper;
-import com.example.Planner.Wrappers.ApiCourseWrapper;
-import com.example.Planner.Wrappers.ApiDepartmentWrapper;
-import com.example.Planner.Wrappers.WrapperInfoGenerator;
+import com.example.Planner.Wrappers.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -49,10 +46,13 @@ public class PlannerController {
         return wrapperInfoGenerator.getCourseBasedOnIds(deptId, courseId);
     }
 
-//
-//    @GetMapping("/departments/{deptId}/courses/{courseId}/offerings/{courseOfferingId}")
-//    public List<ApiCourseOfferingWrapper> getCourseOffering(@PathVariable("deptId") long deptId, @PathVariable("courseId") long courseId, @PathVariable
-//
+
+    @GetMapping("/departments/{deptId}/courses/{courseId}/offerings/{courseOfferingId}")
+    public List<ApiOfferingSectionWrapper> getCourseOffering(@PathVariable("deptId") long deptId,
+                                                             @PathVariable("courseId") long courseId, @PathVariable("courseOfferingId") long courseOfferingId) {
+        return wrapperInfoGenerator.getOfferingBasedOnCourseOfferingId(deptId, courseId, courseOfferingId);
+    }
+
 
 
 

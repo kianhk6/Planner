@@ -94,9 +94,30 @@ public class WrapperInfoGenerator {
 
             }
         }
-
         return offerings;
+    }
 
+    public List<ApiOfferingSectionWrapper> getOfferingBasedOnCourseOfferingId(long deptId, long courseId, long courseOfferingId) {
+        List<CourseInfo> courses = courseInfoGenerator.getDumpCourses();
+        List<ApiOfferingSectionWrapper> offeringInfo = new ArrayList<>();
+        List<Long> ids = new ArrayList<>();
+        for (CourseInfo course : courses) {
+            if (course.getLabel().getDeptId() == deptId
+                    && course.getLabel().getCourseId() == courseId && course.getLabel().getCourseOfferingId() == courseOfferingId) {
+                if (!ids.contains(course.getLabel().getCourseOfferingId())) {
+                    offeringInfo.add(new ApiOfferingSectionWrapper(
+                            course.getLabel().getComponentCode(),
+                            course.getEnrollmentSpace().getCapacity(),
+                            course.getEnrollmentSpace().getTakenSeat()
+                    ));
+                    ids.add(course.getLabel().getCourseOfferingId());
+                    System.out.println("new: " + course);
+                } else {
+                    System.out.println("already in use: " + course);
+                }
+            }
+        }
+        return offeringInfo;
     }
 
     public List<ApiDepartmentWrapper> getDepartments() {
