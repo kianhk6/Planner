@@ -15,7 +15,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api")
 public class PlannerController {
-    CourseInfoGenerator courseInfoGenerator = new CourseInfoGenerator("./data/course_data_2018.csv");
+    CourseInfoGenerator courseInfoGenerator = new CourseInfoGenerator("./data/small_data.csv");
     IdGenerator idGenerator = new IdGenerator(courseInfoGenerator);
     WrapperInfoGenerator wrapperInfoGenerator = new WrapperInfoGenerator(courseInfoGenerator, idGenerator);
     @GetMapping("/about")
