@@ -60,7 +60,7 @@ public class CourseInfo implements Comparable<CourseInfo>{
         int z = getNumericValue(semester.getYear().charAt(2));
 
         year = 1900 + 100 * x + 10 * y + z;
-        System.out.println(year);
+
 
         if (getNumericValue(semester.getTerm()) == SPRINGINT) {
             termString = "Spring";
@@ -69,7 +69,6 @@ public class CourseInfo implements Comparable<CourseInfo>{
         } else if (getNumericValue(semester.getTerm()) == FALLINT) {
             termString = "Fall";
         }
-        System.out.println(termString);
     }
 
     public void generateInstructorString() {
@@ -84,7 +83,6 @@ public class CourseInfo implements Comparable<CourseInfo>{
                 instructorString = instructorString + ", " + instructor;
             }
         }
-        System.out.println(instructorString);
     }
 
     public List<String> getInstructors() {

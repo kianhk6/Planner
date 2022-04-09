@@ -102,6 +102,11 @@ public class CourseInfoGenerator {
             System.out.println(course);
         }
     }
+    public void printDumpCourses(){
+        for(CourseInfo course : dumpCourses){
+            System.out.println(course);
+        }
+    }
 
     public void listDumpCourses() {
         SortDumpCourseBasedOnSubject();

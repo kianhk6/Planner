@@ -51,7 +51,7 @@ public class PlannerController {
 
 //
 //    @GetMapping("/departments/{deptId}/courses/{courseId}/offerings/{courseOfferingId}")
-//    public List<> getCourseOffering(@PathVariable("deptId") long deptId, @PathVariable("courseId") long courseId, @PathVariable
+//    public List<ApiCourseOfferingWrapper> getCourseOffering(@PathVariable("deptId") long deptId, @PathVariable("courseId") long courseId, @PathVariable
 //
 
 

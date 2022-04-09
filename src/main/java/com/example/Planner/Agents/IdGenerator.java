@@ -4,14 +4,14 @@ import com.example.Planner.Model.CourseInfo;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 
 public class IdGenerator {
     public CourseInfoGenerator courseInfoGenerator;
-    public HashMap<String, Integer> departmentsHashMap = new HashMap<String, Integer>();
+    public HashMap<String, Integer> departmentsHashMap = new HashMap<String, Integer>();  //key department
     public HashMap<String, Integer> departmentsHashMapForDumpCourses = new HashMap<String, Integer>();
-    public HashMap<String, Integer> courseHashmap = new HashMap<String, Integer>();
+    public HashMap<String, Integer> courseHashmap = new HashMap<String, Integer>(); //key --> department catalogNumber
     public HashMap<String, Integer> courseHashmapForDumpCourses = new HashMap<String, Integer>();
+    public HashMap<String, Integer> offeringsHashmap = new HashMap<String, Integer>(); //key --> semester location instructorString
     public IdGenerator(CourseInfoGenerator courseInfoGenerator) {
         this.courseInfoGenerator = courseInfoGenerator;
         courseInfoGenerator.SortCoursesBasedOnSubject();
@@ -20,7 +20,9 @@ public class IdGenerator {
         setDeptIdForCourses();
         generateIdForCourses();
         setCourseIdForCourses();
-        generateAndSetIdForOffering();
+        generateIdForOffering();
+        setIdForOffering();
+//        generateAndSetIdForOffering();
     }
 
     public void generateIdForDept() {
@@ -33,14 +35,14 @@ public class IdGenerator {
             }
         }
 
-//        int j = 1;
-//        List<CourseInfo> dumpCourses = courseInfoGenerator.getDumpCourses();
-//        for(CourseInfo course : dumpCourses ){
-//            if(!departmentsHashMapForDumpCourses.containsKey(course.getLabel().getDept())){
-//                departmentsHashMapForDumpCourses.put(course.getLabel().getDept(), j);
-//                j++;
-//            }
-//        }
+        int j = 1;
+        List<CourseInfo> dumpCourses = courseInfoGenerator.getDumpCourses();
+        for(CourseInfo course : dumpCourses ){
+            if(!departmentsHashMapForDumpCourses.containsKey(course.getLabel().getDept())){
+                departmentsHashMapForDumpCourses.put(course.getLabel().getDept(), j);
+                j++;
+            }
+        }
     }
 
     public void generateIdForCourses(){
@@ -49,27 +51,41 @@ public class IdGenerator {
         for(CourseInfo course : courses ){
             if(!courseHashmap.containsKey(course.getLabel().getDept() + ' ' + course.getLabel().getCatalogNum())){
                 courseHashmap.put(course.getLabel().getDept() + ' ' + course.getLabel().getCatalogNum(), i);
+//                System.out.println(course.getLabel().getDept() + ' ' + course.getLabel().getCatalogNum() + ' ' + courseHashmap.get(course.getLabel().getDept() + ' ' + course.getLabel().getCatalogNum()));
                 i++;
             }
         }
 
-//        int j = 1;
-//        List<CourseInfo> DumpCourses = courseInfoGenerator.getDumpCourses();
-//        for(CourseInfo course : DumpCourses ){
-//            if(!courseHashmapForDumpCourses.containsKey(course.getLabel().getDept() + ' ' + course.getLabel().getCatalogNum())){
-//                courseHashmapForDumpCourses.put(course.getLabel().getDept() + ' ' + course.getLabel().getCatalogNum(), j);
-//                System.out.println();
-//                j++;
-//            }
-//        }
+        int j = 1;
+        List<CourseInfo> DumpCourses = courseInfoGenerator.getDumpCourses();
+        for(CourseInfo course : DumpCourses ){
+            if(!courseHashmapForDumpCourses.containsKey(course.getLabel().getDept() + ' ' + course.getLabel().getCatalogNum())){
+                courseHashmapForDumpCourses.put(course.getLabel().getDept() + ' ' + course.getLabel().getCatalogNum(), j);
+//                System.out.println(course.getLabel().getDept() + ' ' + course.getLabel().getCatalogNum() + ' ' + courseHashmapForDumpCourses.get(course.getLabel().getDept() + ' ' + course.getLabel().getCatalogNum()));
+                j++;
+            }
+        }
     }
 
-    public void generateAndSetIdForOffering(){
+    public void generateIdForOffering(){
         int i = 1;
-        List<CourseInfo> courses = courseInfoGenerator.getCourses();
-        for(CourseInfo course : courses){
-            course.getLabel().setCourseOfferingId(i);
-            i++;
+        for(CourseInfo course : courseInfoGenerator.getDumpCourses()){
+            if(!offeringsHashmap.containsKey(course.getYear() + ' ' + course.getTermString() + ' ' + course.getLocation() + ' ' + course.getInstructorString())){
+                offeringsHashmap.put(course.getYear() + ' ' + course.getTermString() + ' ' + course.getLocation() + ' ' + course.getInstructorString(), i);
+//                System.out.println(course.getYear() + "   " + course.getTermString() + ' '
+//                        + course.getLocation() + ' ' + course.getInstructorString()+ ' ' + offeringsHashmap.get(course.getYear() + ' '
+//                        + course.getTermString() + ' ' + course.getLocation() + ' ' + course.getInstructorString()));
+                i++;
+            }
+        }
+
+    }
+
+    public void setIdForOffering(){
+        List<CourseInfo> DumpCourses = courseInfoGenerator.getDumpCourses();
+        for(CourseInfo course : DumpCourses){
+            course.getLabel().setCourseOfferingId(offeringsHashmap.get(course.getYear() + ' ' + course.getTermString() + ' ' + course.getLocation() + ' ' + course.getInstructorString()));
+//            System.out.println(offeringsHashmap.get(course.getYear() + ' ' + course.getTermString() + ' ' + course.getLocation() + ' ' + course.getInstructorString()));
         }
     }
 
@@ -86,11 +102,13 @@ public class IdGenerator {
             course.getLabel().setDeptId(departmentsHashMap.get(course.getLabel().getDept()));
         }
 
-//        List<CourseInfo> dumpCourses = courseInfoGenerator.getDumpCourses();
-//        for(CourseInfo course : dumpCourses ){
-//            course.getLabel().setDeptId(departmentsHashMapForDumpCourses.get(course.getLabel().getDept()));
-//        }
+        List<CourseInfo> dumpCourses = courseInfoGenerator.getDumpCourses();
+        for(CourseInfo course : dumpCourses ){
+            course.getLabel().setDeptId(departmentsHashMapForDumpCourses.get(course.getLabel().getDept()));
+        }
     }
+
+
 
     public CourseInfoGenerator getCourseInfoGenerator() {
         return courseInfoGenerator;
@@ -134,11 +152,10 @@ public class IdGenerator {
             course.getLabel().setCourseId(courseHashmap.get(course.getLabel().getDept() +' '+ course.getLabel().getCatalogNum()));
         }
 
-//        List<CourseInfo> dumpCourses = courseInfoGenerator.getDumpCourses();
-//        for(CourseInfo course : dumpCourses ){
-//            course.getLabel().setCourseId(departmentsHashMapForDumpCourses.get(course.getLabel().getDept()
-//                    + ' ' + course.getLabel().getCatalogNum()));
-//        }
+        List<CourseInfo> dumpCourses = courseInfoGenerator.getDumpCourses();
+        for(CourseInfo course : dumpCourses ){
+            course.getLabel().setCourseId(courseHashmapForDumpCourses.get(course.getLabel().getDept() + ' ' + course.getLabel().getCatalogNum()));
+        }
     }
 
     public void printDeptAndId(){

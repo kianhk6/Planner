@@ -10,7 +10,6 @@ import static java.lang.Long.parseLong;
 
 public class WrapperInfoGenerator {
     List<ApiDepartmentWrapper> departments = new ArrayList<>();
-
     CourseInfoGenerator courseInfoGenerator;
     IdGenerator idGenerator;
 
@@ -23,7 +22,7 @@ public class WrapperInfoGenerator {
     }
 
     private void generateDepartments() {
-        HashMap<String, Integer> departmentsHashMap = idGenerator.getDepartmentsHashMap();
+        HashMap<String, Integer> departmentsHashMap = idGenerator.getDepartmentsHashMapForDumpCourses();
         Set<String> names = departmentsHashMap.keySet();
         for(String name : names){
             departments.add(new ApiDepartmentWrapper(name, departmentsHashMap.get(name)));
@@ -31,7 +30,25 @@ public class WrapperInfoGenerator {
     }
 
     public List<ApiCourseWrapper>  getCoursesBasedOnDeptId(long deptId){
-        List<CourseInfo> courses = courseInfoGenerator.getCourses();
+//        List<CourseInfo> courses = courseInfoGenerator.getCourses();
+//        List<ApiCourseWrapper> courseForDept = new ArrayList<>();
+//        for(CourseInfo course : courses){
+//            if(course.getLabel().getDeptId() == deptId){
+//                courseForDept.add(new ApiCourseWrapper(course.getLabel().getCatalogNum(), course.getLabel().getCourseId()));
+//            }
+//        }
+//
+//        List<ApiCourseWrapper> noRepetitionCourses = new ArrayList<>();
+//        noRepetitionCourses.add(courseForDept.get(0));
+//        int oldI = 1;
+//        while (oldI < courseForDept.size()){
+//            if(noRepetitionCourses.get(noRepetitionCourses.size()-1).getCourseId() != courseForDept.get(oldI).getCourseId()){
+//                noRepetitionCourses.add(courseForDept.get(oldI));
+//            }
+//            oldI++;
+//        }
+//        return noRepetitionCourses;
+        List<CourseInfo> courses = courseInfoGenerator.getDumpCourses();
         List<ApiCourseWrapper> courseForDept = new ArrayList<>();
         for(CourseInfo course : courses){
             if(course.getLabel().getDeptId() == deptId){
@@ -49,24 +66,35 @@ public class WrapperInfoGenerator {
             oldI++;
         }
         return noRepetitionCourses;
+
     }
 
     public List<ApiCourseOfferingWrapper> getCourseBasedOnIds(long deptId, long courseId){
-        List<CourseInfo> courses = courseInfoGenerator.getCourses();
+        List<CourseInfo> courses = courseInfoGenerator.getDumpCourses();
         List<ApiCourseOfferingWrapper> offerings = new ArrayList<>();
+        List<Long> ids = new ArrayList<>();
         for(CourseInfo course : courses){
             if(course.getLabel().getDeptId() == deptId
                     && course.getLabel().getCourseId() == courseId){
-                offerings.add(new ApiCourseOfferingWrapper(
-                        course.getLabel().getCourseOfferingId(),
-                        course.getLocation(),
-                        course.getInstructorString(),
-                        course.getTermString(),
-                        parseLong(course.getSemester().getYear() + course.getSemester().getTerm()),
-                        course.getYear()
-                        ));
+                if(!ids.contains(course.getLabel().getCourseOfferingId())){
+                    offerings.add(new ApiCourseOfferingWrapper(
+                            course.getLabel().getCourseOfferingId(),
+                            course.getLocation(),
+                            course.getInstructorString(),
+                            course.getTermString(),
+                            parseLong(course.getSemester().getYear() + course.getSemester().getTerm()),
+                            course.getYear()
+                    ));
+                    ids.add( course.getLabel().getCourseOfferingId());
+                    System.out.println("new: " + course);
+                }
+                else{
+                    System.out.println("already in use: " + course);
+                }
+
             }
         }
+
         return offerings;
 
     }
