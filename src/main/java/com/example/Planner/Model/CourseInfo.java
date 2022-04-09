@@ -3,13 +3,44 @@ package com.example.Planner.Model;
 import java.util.Comparator;
 import java.util.List;
 
+import static java.lang.Character.getNumericValue;
+
 public class CourseInfo implements Comparable<CourseInfo>{
+    public static final int SPRINGINT = 1;
+    public static final int SUMMERINT = 4;
+    public static final int FALLINT = 7;
     List<String> instructors;
     Semester semester;
     Label label;
     EnrollmentSpace enrollmentSpace;
     String location;
+    String instructorString;
+    int year;
+    String termString;
 
+    public String getInstructorString() {
+        return instructorString;
+    }
+
+    public void setInstructorString(String instructorString) {
+        this.instructorString = instructorString;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
+    }
+
+    public String getTermString() {
+        return termString;
+    }
+
+    public void setTermString(String termString) {
+        this.termString = termString;
+    }
 
     public CourseInfo(List<String> instructors, Semester semester,
                       Label label, EnrollmentSpace enrollmentSpace,
@@ -19,6 +50,41 @@ public class CourseInfo implements Comparable<CourseInfo>{
         this.label = label;
         this.enrollmentSpace = enrollmentSpace;
         this.location = location;
+        setYearAndSemester();
+        generateInstructorString();
+    }
+
+    public void setYearAndSemester(){
+        int x = getNumericValue(semester.getYear().charAt(0));
+        int y = getNumericValue(semester.getYear().charAt(1));
+        int z = getNumericValue(semester.getYear().charAt(2));
+
+        year = 1900 + 100 * x + 10 * y + z;
+        System.out.println(year);
+
+        if (getNumericValue(semester.getTerm()) == SPRINGINT) {
+            termString = "Spring";
+        } else if (getNumericValue(semester.getTerm()) == SUMMERINT) {
+            termString = "Summer";
+        } else if (getNumericValue(semester.getTerm()) == FALLINT) {
+            termString = "Fall";
+        }
+        System.out.println(termString);
+    }
+
+    public void generateInstructorString() {
+        instructorString = "";
+        boolean isFirst = true;
+        for (String instructor : instructors) {
+            if(isFirst){
+                instructorString = instructorString + instructor;
+                isFirst = false;
+            }
+            else{
+                instructorString = instructorString + ", " + instructor;
+            }
+        }
+        System.out.println(instructorString);
     }
 
     public List<String> getInstructors() {
@@ -80,8 +146,8 @@ public class CourseInfo implements Comparable<CourseInfo>{
             return -1;
         }
         else{
-            int termOne = Character.getNumericValue(this.getSemester().getTerm());
-            int termTwo =  Character.getNumericValue(o.getSemester().getTerm());
+            int termOne = getNumericValue(this.getSemester().getTerm());
+            int termTwo =  getNumericValue(o.getSemester().getTerm());
             if (termOne > termTwo) {
                 return 1;
             }

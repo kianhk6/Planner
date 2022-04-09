@@ -1,9 +1,13 @@
 package com.example.Planner.Controller;
 
 import com.example.Planner.Agents.CourseInfoGenerator;
+import com.example.Planner.Agents.IdGenerator;
+import com.example.Planner.Wrappers.ApiCourseOfferingWrapper;
+import com.example.Planner.Wrappers.ApiCourseWrapper;
 import com.example.Planner.Wrappers.ApiDepartmentWrapper;
 import com.example.Planner.Wrappers.WrapperInfoGenerator;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -11,13 +15,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.example.Planner.Agents.IdGenerator.reverse;
-
 @RestController
 @RequestMapping("/api")
 public class PlannerController {
     CourseInfoGenerator courseInfoGenerator = new CourseInfoGenerator("./data/course_data_2018.csv");
-    WrapperInfoGenerator wrapperInfoGenerator = new WrapperInfoGenerator(courseInfoGenerator);
+    IdGenerator idGenerator = new IdGenerator(courseInfoGenerator);
+    WrapperInfoGenerator wrapperInfoGenerator = new WrapperInfoGenerator(courseInfoGenerator, idGenerator);
     @GetMapping("/about")
     public Map<String, String> getMyName(){
         HashMap<String, String> About = new HashMap<>();
@@ -36,6 +39,20 @@ public class PlannerController {
         return wrapperInfoGenerator.getDepartments();
     }
 
+    @GetMapping("/departments/{id}/courses")
+    public List<ApiCourseWrapper> getCourseDept(@PathVariable("id") long deptId) {
+        return wrapperInfoGenerator.getCoursesBasedOnDeptId(deptId);
+    }
+
+    @GetMapping("/departments/{deptId}/courses/{courseId}/offerings")
+    public List<ApiCourseOfferingWrapper> getCourseDept(@PathVariable("deptId") long deptId, @PathVariable("courseId") long courseId) {
+        return wrapperInfoGenerator.getCourseBasedOnIds(deptId, courseId);
+    }
+
+//
+//    @GetMapping("/departments/{deptId}/courses/{courseId}/offerings/{courseOfferingId}")
+//    public List<> getCourseOffering(@PathVariable("deptId") long deptId, @PathVariable("courseId") long courseId, @PathVariable
+//
 
 
 

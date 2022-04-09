@@ -5,6 +5,24 @@ public class Label {
     String catalogNum;
     String componentCode;
     long deptId;
+    long courseId;
+    long courseOfferingId;
+
+    public long getCourseOfferingId() {
+        return courseOfferingId;
+    }
+
+    public void setCourseOfferingId(long courseOfferingId) {
+        this.courseOfferingId = courseOfferingId;
+    }
+
+    public long getCourseId() {
+        return courseId;
+    }
+
+    public void setCourseId(long courseId) {
+        this.courseId = courseId;
+    }
 
     public Label(String subject, String catalogNum, String componentCode) {
         this.dept = subject;

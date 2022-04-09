@@ -13,7 +13,7 @@ import java.util.*;
 public class CourseInfoGenerator {
     List<CourseInfo> courses = new ArrayList<>();
     List<CourseInfo> dumpCourses = new ArrayList<>();
-    IdGenerator idGenerator;
+
 
 
 
@@ -22,15 +22,8 @@ public class CourseInfoGenerator {
         sortCourses();
         setUpDumpCourses();
         SortCoursesBasedOnSubject();
-        idGenerator = new IdGenerator(courses);
-    }
-    public IdGenerator getIdGenerator() {
-        return idGenerator;
     }
 
-    public void setIdGenerator(IdGenerator idGenerator) {
-        this.idGenerator = idGenerator;
-    }
 
     private void setUpCourses(String path) {
         try {
@@ -162,7 +155,7 @@ public class CourseInfoGenerator {
         }
     }
 
-    private void SortCoursesBasedOnSubject() {
+    public void SortCoursesBasedOnSubject() {
         courses.sort(new Comparator<CourseInfo>() {
             @Override
             public int compare(CourseInfo o1, CourseInfo o2) {
@@ -201,7 +194,46 @@ public class CourseInfoGenerator {
             }});
     }
 
-    private void SortDumpCourseBasedOnSubject() {
+    public void SortCoursesBasedOnCatalogNumber() {
+        courses.sort(new Comparator<CourseInfo>() {
+            @Override
+            public int compare(CourseInfo o1, CourseInfo o2) {
+                String subjectOne = o1.getLabel().getDept();
+                String subjectTwo = o2.getLabel().getDept();
+                int compareSubject = subjectOne.compareTo(subjectTwo);
+
+                if (compareSubject != 0) {
+                    return compareSubject;
+                } else {
+                    String catalogNumberOne = o1.getLabel().getCatalogNum();
+                    String catalogNumberTwo = o2.getLabel().getCatalogNum();
+                    int compareCatalog = catalogNumberOne.compareTo(catalogNumberTwo);
+                    if(compareCatalog != 0){
+                        return compareCatalog;
+                    } else { // for 0
+                        int yearOne = Integer.parseInt(o1.getSemester().getYear());
+                        int yearTwo = Integer.parseInt(o2.getSemester().getYear());
+
+                        if (yearOne > yearTwo) {
+                            return 1;
+                        } else if (yearOne < yearTwo) {
+                            return -1;
+                        } else {
+                            int termOne = Character.getNumericValue(o1.getSemester().getTerm());
+                            int termTwo = Character.getNumericValue(o2.getSemester().getTerm());
+                            if (termOne > termTwo) {
+                                return 1;
+                            } else if (termOne < termTwo) {
+                                return -1;
+                            }
+                            return 0;
+                        }
+                    }
+                }
+            }});
+    }
+
+    public void SortDumpCourseBasedOnSubject() {
         dumpCourses.sort(new Comparator<CourseInfo>() {
             @Override
             public int compare(CourseInfo o1, CourseInfo o2) {
@@ -275,6 +307,14 @@ public class CourseInfoGenerator {
 
     public void sortCourses() {
         Collections.sort(courses);
+    }
+
+    public List<CourseInfo> getCourses() {
+        return courses;
+    }
+
+    public List<CourseInfo> getDumpCourses() {
+        return dumpCourses;
     }
 
     public void setUpDumpCourses(){
