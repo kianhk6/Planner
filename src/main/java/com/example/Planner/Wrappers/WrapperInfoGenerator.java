@@ -23,7 +23,7 @@ public class WrapperInfoGenerator {
     }
 
     private void generateDepartments() {
-        HashMap<String, Integer> departmentsHashMap = idGenerator.getDepartmentsHashMapForDumpCourses();
+        HashMap<String, Integer> departmentsHashMap = idGenerator.getDepartmentsHashMap();
         Set<String> names = departmentsHashMap.keySet();
         for(String name : names){
             departments.add(new ApiDepartmentWrapper(name, departmentsHashMap.get(name)));

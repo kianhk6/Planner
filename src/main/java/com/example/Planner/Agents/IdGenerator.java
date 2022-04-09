@@ -21,13 +21,11 @@ public class IdGenerator {
         generateIdForCourses();
         setCourseIdForCourses();
         generateAndSetIdForOffering();
-//        printCourseId();
     }
 
     public void generateIdForDept() {
         Integer i = 1;
         List<CourseInfo> courses = courseInfoGenerator.getCourses();
-        List<CourseInfo> dumpCourses = courseInfoGenerator.getDumpCourses();
         for(CourseInfo course : courses ){
             if(!departmentsHashMap.containsKey(course.getLabel().getDept())){
                 departmentsHashMap.put(course.getLabel().getDept(), i);
@@ -35,13 +33,14 @@ public class IdGenerator {
             }
         }
 
-        int j = 0;
-        for(CourseInfo course : dumpCourses ){
-            if(!departmentsHashMapForDumpCourses.containsKey(course.getLabel().getDept())){
-                departmentsHashMapForDumpCourses.put(course.getLabel().getDept(), j);
-                j++;
-            }
-        }
+//        int j = 1;
+//        List<CourseInfo> dumpCourses = courseInfoGenerator.getDumpCourses();
+//        for(CourseInfo course : dumpCourses ){
+//            if(!departmentsHashMapForDumpCourses.containsKey(course.getLabel().getDept())){
+//                departmentsHashMapForDumpCourses.put(course.getLabel().getDept(), j);
+//                j++;
+//            }
+//        }
     }
 
     public void generateIdForCourses(){
@@ -50,20 +49,19 @@ public class IdGenerator {
         for(CourseInfo course : courses ){
             if(!courseHashmap.containsKey(course.getLabel().getDept() + ' ' + course.getLabel().getCatalogNum())){
                 courseHashmap.put(course.getLabel().getDept() + ' ' + course.getLabel().getCatalogNum(), i);
-//                System.out.println(course.getLabel().getDept() + ' ' + course.getLabel().getCatalogNum() + ", id: " + i);
                 i++;
             }
         }
 
-        int j = 0;
-        List<CourseInfo> DumpCourses = courseInfoGenerator.getDumpCourses();
-        for(CourseInfo course : DumpCourses ){
-            if(!courseHashmapForDumpCourses.containsKey(course.getLabel().getDept() + ' ' + course.getLabel().getCatalogNum())){
-                courseHashmapForDumpCourses.put(course.getLabel().getDept() + ' ' + course.getLabel().getCatalogNum(), j);
-                System.out.println();
-                j++;
-            }
-        }
+//        int j = 1;
+//        List<CourseInfo> DumpCourses = courseInfoGenerator.getDumpCourses();
+//        for(CourseInfo course : DumpCourses ){
+//            if(!courseHashmapForDumpCourses.containsKey(course.getLabel().getDept() + ' ' + course.getLabel().getCatalogNum())){
+//                courseHashmapForDumpCourses.put(course.getLabel().getDept() + ' ' + course.getLabel().getCatalogNum(), j);
+//                System.out.println();
+//                j++;
+//            }
+//        }
     }
 
     public void generateAndSetIdForOffering(){
@@ -78,7 +76,7 @@ public class IdGenerator {
     public void printCourseId(){
         List<CourseInfo> courses = courseInfoGenerator.getCourses();
         for(CourseInfo course : courses ){
-            System.out.println(course.getLabel().getDept() +" "+course.getLabel().getCatalogNum() + "," + course.getLabel().getCourseId());
+            System.out.println(course.getLabel().getDept() + " " + course.getLabel().getCatalogNum() + "," + course.getLabel().getCourseId());
         }
     }
 
@@ -88,10 +86,10 @@ public class IdGenerator {
             course.getLabel().setDeptId(departmentsHashMap.get(course.getLabel().getDept()));
         }
 
-        List<CourseInfo> dumpCourses = courseInfoGenerator.getDumpCourses();
-        for(CourseInfo course : dumpCourses ){
-            course.getLabel().setDeptId(departmentsHashMapForDumpCourses.get(course.getLabel().getDept()));
-        }
+//        List<CourseInfo> dumpCourses = courseInfoGenerator.getDumpCourses();
+//        for(CourseInfo course : dumpCourses ){
+//            course.getLabel().setDeptId(departmentsHashMapForDumpCourses.get(course.getLabel().getDept()));
+//        }
     }
 
     public CourseInfoGenerator getCourseInfoGenerator() {
@@ -136,11 +134,11 @@ public class IdGenerator {
             course.getLabel().setCourseId(courseHashmap.get(course.getLabel().getDept() +' '+ course.getLabel().getCatalogNum()));
         }
 
-        List<CourseInfo> dumpCourses = courseInfoGenerator.getDumpCourses();
-        for(CourseInfo course : dumpCourses ){
-            course.getLabel().setCourseId(departmentsHashMapForDumpCourses.get(course.getLabel().getDept()
-                    + ' ' + course.getLabel().getCatalogNum()));
-        }
+//        List<CourseInfo> dumpCourses = courseInfoGenerator.getDumpCourses();
+//        for(CourseInfo course : dumpCourses ){
+//            course.getLabel().setCourseId(departmentsHashMapForDumpCourses.get(course.getLabel().getDept()
+//                    + ' ' + course.getLabel().getCatalogNum()));
+//        }
     }
 
     public void printDeptAndId(){
