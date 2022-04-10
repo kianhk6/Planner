@@ -122,11 +122,45 @@ public class WrapperInfoGenerator {
                             course.getEnrollmentSpace().getCapacity(),
                             course.getEnrollmentSpace().getTakenSeat()
                     ));
-                    System.out.println("new: " + course);
             }
         }
         return offeringInfo;
     }
+
+    public List<ApiGraphDataPointWrapper> getGraphPointsBasedOnDeptId(long deptId) {
+        List<CourseInfo> courses = courseInfoGenerator.getDumpCourses();
+        List<ApiGraphDataPointWrapper> graphPoints = new ArrayList<>();
+        List<Long> ids = new ArrayList<>();
+        for (CourseInfo course : courses) {
+            if(course.getLabel().getDeptId() == deptId && course.getLabel().getComponentCode().equals("LEC")) {
+                if(!ids.contains(course.getSemester().makeSemesterCode())){
+                    graphPoints.add(new ApiGraphDataPointWrapper(course.getSemester().makeSemesterCode(), course.getEnrollmentSpace().getTakenSeat()));
+                    ids.add(course.getSemester().makeSemesterCode());
+                }
+                else{
+                    for (int i = 0; i < ids.size(); i++) {
+                        if (ids.get(i) == course.getSemester().makeSemesterCode()) {
+                            graphPoints.get(i).setTotalCoursesTaken(graphPoints.get(i).getTotalCoursesTaken() + course.getEnrollmentSpace().getTakenSeat());
+                        }
+                    }
+                }
+            }
+        }
+        graphPoints.sort(new Comparator<ApiGraphDataPointWrapper>() {
+            @Override
+            public int compare(ApiGraphDataPointWrapper o1, ApiGraphDataPointWrapper o2) {
+                if ((int)o1.getSemesterCode() > (int)o2.getSemesterCode()) {
+                    return 1;
+                } else if((int)o1.getSemesterCode() < (int)o2.getSemesterCode()) {
+                    return -1;
+                } else {
+                    return 0;
+                }
+            }
+        });
+        return graphPoints;
+    }
+
 
     public List<ApiDepartmentWrapper> getDepartments() {
         return departments;

@@ -1,4 +1,7 @@
 package com.example.Planner.Model;
+import java.util.*;
+
+import static java.lang.Long.parseLong;
 
 public class Semester {
     String year;
@@ -23,5 +26,12 @@ public class Semester {
 
     public char getTerm() {
         return term;
+    }
+
+    public long makeSemesterCode() {
+        String stringYear = year;
+        String stringTerm = Character.toString(term);
+        String stringYearTerm = stringYear + stringTerm;
+        return parseLong(stringYearTerm);
     }
 }

@@ -24,8 +24,9 @@ public class PlannerController {
     IdGenerator idGenerator = new IdGenerator(courseInfoGenerator);
     WrapperInfoGenerator wrapperInfoGenerator = new WrapperInfoGenerator(courseInfoGenerator, idGenerator);
     List<ApiWatcherWrapper> watchers = new ArrayList<>();
+
     @GetMapping("/about")
-    public Map<String, String> getMyName(){
+    public Map<String, String> getMyName() {
         HashMap<String, String> About = new HashMap<>();
         About.put("appName", "SFU Course Planner clone");
         About.put("authorName", "Kian Hosseinkhani and Sasha Vujisic");
@@ -33,7 +34,7 @@ public class PlannerController {
     }
 
     @GetMapping("/dump-model")
-    public void dumpModel(){
+    public void dumpModel() {
         courseInfoGenerator.listDumpCourses();
     }
 
@@ -84,13 +85,13 @@ public class PlannerController {
         idGenerator = new IdGenerator(courseInfoGenerator);
         wrapperInfoGenerator = new WrapperInfoGenerator(courseInfoGenerator, idGenerator);
 
-        System.out.println(newCourse.getLabel().getDeptId());
-        for(ApiWatcherWrapper watcher : watchers){
-            if(watcher.getDepartment().getDeptId() == newCourse.getLabel().getDeptId()){
-                if(watcher.getCourse().getCourseId() == newCourse.getLabel().getCourseId()){
+        //System.out.println(newCourse.getLabel().getDeptId());
+        for (ApiWatcherWrapper watcher : watchers) {
+            if (watcher.getDepartment().getDeptId() == newCourse.getLabel().getDeptId()) {
+                if (watcher.getCourse().getCourseId() == newCourse.getLabel().getCourseId()) {
                     watcher.getEvents().add(LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"))
-                    + " added section " + newCourse.getLabel().getComponentCode() + " with enrolment ("
-                    + newCourse.getEnrollmentSpace().getTakenSeat() + "/" + newCourse.getEnrollmentSpace().getCapacity() + ") to offering " +
+                            + " added section " + newCourse.getLabel().getComponentCode() + " with enrollment ("
+                            + newCourse.getEnrollmentSpace().getTakenSeat() + "/" + newCourse.getEnrollmentSpace().getCapacity() + ") to offering " +
                             newCourse.getTermString() + ' ' + newCourse.getYear());
                 }
             }
@@ -108,12 +109,11 @@ public class PlannerController {
         CourseInfo course = wrapperInfoGenerator.getCourseBasedOnIds(offeringData.getDeptId(),
                 offeringData.getCourseId());
 
-
         watchers.add(new ApiWatcherWrapper(watchers.size(),
                 new ApiDepartmentWrapper(course.getLabel().getDept(), course.getLabel().getDeptId()),
                 new ApiCourseWrapper(course.getLabel().getCatalogNum(), course.getLabel().getCourseId()),
                 new ArrayList<String>()
-                ));
+        ));
     }
 
 
@@ -128,12 +128,8 @@ public class PlannerController {
         watchers.removeIf(watcher -> watcher.getId() == watcherId);
     }
 
-
-
-
-
-
-
-
-
+    @GetMapping("/stats/students-per-semester")
+    public List<ApiGraphDataPointWrapper> getPoints(@RequestParam int deptId) {
+        return wrapperInfoGenerator.getGraphPointsBasedOnDeptId(deptId);
+    }
 }
