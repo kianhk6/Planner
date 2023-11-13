@@ -1,4 +1,4 @@
-# README for Assignment 5: Course Planner
+# Course Planner
 
 ## Introduction
 
@@ -61,8 +61,6 @@ This project is licensed under the terms of the educational use only. Redistribu
 
 ---
 
-
----
 
 ### Support
 
