@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Assignment 5: Course Planner is a Spring Boot server application designed to assist students in planning their courses at SFU. It provides insights into past course offerings to predict future availabilities. This server interfaces with a web-based UI through a REST API, processing and organizing data from a CSV file containing historical course data.
+Course Planner is a Spring Boot server application designed to assist students in planning their courses at SFU. It provides insights into past course offerings to predict future availabilities. This server interfaces with a web-based UI through a REST API, processing and organizing data from a CSV file containing historical course data.
 
 ## Getting Started
 
