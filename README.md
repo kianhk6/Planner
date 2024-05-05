@@ -44,24 +44,4 @@ Course Planner is a Spring Boot server application designed to assist students i
 2. Access the web-based UI at `http://localhost:8080`.
 3. Use the application to view past course offerings and predict future availability.
 
-## Development Tips
 
-- Ensure separation of concerns: controllers should be separate from the model.
-- Avoid hardcoding values; use relative paths and named constants where necessary.
-- Handle exceptions gracefully, especially when dealing with file input/output operations.
-- Make sure to follow the code style guide provided for consistency and readability.
-
-## Contributing
-
-This project is an academic assignment and is not open for external contributions. For any queries or suggestions, please contact the instructor or TAs of the course.
-
-## License
-
-This project is licensed under the terms of the educational use only. Redistribution or commercial use is not permitted.
-
----
-
-
-### Support
-
-For technical issues or clarifications, please reach out to your instructor or teaching assistants. Do not post your queries or code snippets in public forums.
